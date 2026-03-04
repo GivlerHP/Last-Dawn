@@ -18,6 +18,8 @@ public class Sanity implements ISanity {
         sanity = clamped;
     }
 
+    public int getMaxSanity() { return 100; }
+
     @Override
     public SanityStage getStage() {
         if (sanity <= 25) return SanityStage.SANE;

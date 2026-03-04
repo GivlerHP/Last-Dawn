@@ -3,6 +3,7 @@ package ru.givler.lastdawn.sanity;
 public interface ISanity {
     int getSanity();
     void setSanity(int value);
+    int getMaxSanity();
     boolean hasSpawnedWarden();
     void setSpawnedWarden(boolean value);
 

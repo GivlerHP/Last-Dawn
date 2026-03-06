@@ -4,6 +4,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import ru.givler.lastdawn.LastDawn;
+import ru.givler.lastdawn.network.packet.FakeBlockPacket;
 import ru.givler.lastdawn.network.packet.SanitySyncPacket;
 
 public class LDNetwork {
@@ -25,6 +26,14 @@ public class LDNetwork {
                 SanitySyncPacket::encode,
                 SanitySyncPacket::decode,
                 SanitySyncPacket::handle
+        );
+
+        CHANNEL.registerMessage(
+                id++,
+                FakeBlockPacket.class,
+                FakeBlockPacket::encode,
+                FakeBlockPacket::decode,
+                FakeBlockPacket::handle
         );
     }
 }

@@ -7,6 +7,9 @@ public interface ISanity {
     boolean hasSpawnedWarden();
     void setSpawnedWarden(boolean value);
 
+    SanityStage getPreviousStage();
+    void setPreviousStage(SanityStage stage);
+
     default void addSanity(int delta) { setSanity(getSanity() + delta); }
     default void reduceSanity(int delta) { setSanity(getSanity() - delta); }
 

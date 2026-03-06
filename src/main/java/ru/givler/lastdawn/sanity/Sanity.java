@@ -3,6 +3,7 @@ package ru.givler.lastdawn.sanity;
 public class Sanity implements ISanity {
     private int sanity = 0; // 0-100
     private boolean spawnedWarden = false;
+    private SanityStage previousStage = SanityStage.SANE;
 
     @Override
     public boolean hasSpawnedWarden() { return spawnedWarden; }
@@ -17,6 +18,12 @@ public class Sanity implements ISanity {
         int clamped = Math.max(0, Math.min(100, value));
         sanity = clamped;
     }
+
+    @Override
+    public SanityStage getPreviousStage() { return previousStage; }
+
+    @Override
+    public void setPreviousStage(SanityStage stage) { previousStage = stage; }
 
     public int getMaxSanity() { return 100; }
 

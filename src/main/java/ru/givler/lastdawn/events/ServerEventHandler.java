@@ -23,6 +23,7 @@ import ru.givler.lastdawn.network.packet.SanitySyncPacket;
 import ru.givler.lastdawn.registry.CommandRegistry;
 import ru.givler.lastdawn.sanity.ISanity;
 import ru.givler.lastdawn.sanity.SanityProvider;
+import ru.givler.lastdawn.sanity.SanityStage;
 
 /**
  * Содержит обработчики событий: деградация рассудка, восстановление, триггер стадий и спавн вардена.
@@ -53,10 +54,20 @@ public class ServerEventHandler {
         if (player.level().isClientSide) return;
 
         player.getCapability(SanityProvider.SANITY_CAP).ifPresent(sanity -> {
+            SanityStage oldStage = sanity.getPreviousStage(); // ← берём сохранённую
+
             debugMessage(player, sanity);
             lightSanityChange(player, sanity);
 
-            switch (sanity.getStage()) {
+            SanityStage newStage = sanity.getStage();
+
+            if (oldStage != newStage && player instanceof ServerPlayer serverPlayer) {
+                System.out.println("Stage changed: " + oldStage + " -> " + newStage);
+                SanityBlockTracker.onStageChanged(serverPlayer, sanity, oldStage, newStage);
+                sanity.setPreviousStage(newStage); // ← сохраняем новую
+            }
+
+            switch (newStage) {
                 case ANXIOUS   -> anxious(player);
                 case PSYCHOSIS -> psychosis(player, sanity);
                 case INSANITY  -> insanity(player, sanity);

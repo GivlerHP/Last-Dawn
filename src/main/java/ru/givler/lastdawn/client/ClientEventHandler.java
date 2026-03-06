@@ -4,24 +4,27 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import ru.givler.lastdawn.LastDawn;
+import ru.givler.lastdawn.registry.BlockRegistration;
 import ru.givler.lastdawn.sanity.SanityProvider;
 import ru.givler.lastdawn.sanity.SanityStage;
 
-@Mod.EventBusSubscriber(
-        modid = LastDawn.MODID,
-        bus = Mod.EventBusSubscriber.Bus.FORGE,
-        value = Dist.CLIENT)
+import java.util.List;
+
+@Mod.EventBusSubscriber(modid = LastDawn.MODID,bus = Mod.EventBusSubscriber.Bus.FORGE,value = Dist.CLIENT)
 public class ClientEventHandler {
 
-    private static final ResourceLocation VIGNETTE_TEXTURE =
-            new ResourceLocation("minecraft", "textures/misc/vignette.png"); //standart texture
+    // private static final ResourceLocation VIGNETTE_TEXTURE = new ResourceLocation("minecraft", "textures/misc/vignette.png"); //standart texture
 
     @SubscribeEvent
     public static void onRenderGui(RenderGuiOverlayEvent.Post event) {
@@ -62,10 +65,32 @@ public class ClientEventHandler {
         RenderSystem.defaultBlendFunc();
 
         gui.setColor(0f, 0f, 0f, intensity * 0.7f);
-        gui.blit(VIGNETTE_TEXTURE, 0, 0, 0f, 0f, w, h, w, h);
+        //gui.blit(VIGNETTE_TEXTURE, 0, 0, 0f, 0f, w, h, w, h);
         gui.setColor(1f, 1f, 1f, 1f);
 
         RenderSystem.disableBlend();
+    }
+
+    public static void showRealBlocks(List<BlockPos> positions) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null) return;
+
+        for (BlockPos pos : positions) {
+            mc.levelRenderer.setSectionDirty(
+                    pos.getX() >> 4, pos.getY() >> 4, pos.getZ() >> 4
+            );
+        }
+    }
+
+    @Mod.EventBusSubscriber(modid = LastDawn.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public class ClientSetupHandler {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            ItemBlockRenderTypes.setRenderLayer(
+                    BlockRegistration.GHOST_WALL.get(),
+                    RenderType.cutout()
+            );
+        }
     }
 }
 

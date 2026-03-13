@@ -9,6 +9,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import ru.givler.lastdawn.client.ClientEventHandler;
 import ru.givler.lastdawn.network.LDNetwork;
+import ru.givler.lastdawn.registry.BlockEntityRegistration;
 import ru.givler.lastdawn.registry.BlockRegistration;
 import ru.givler.lastdawn.registry.ItemRegistration;
 
@@ -25,6 +26,7 @@ public class LastDawn
 
         BlockRegistration.BLOCKS.register(modEventBus);
         ItemRegistration.ITEMS.register(modEventBus);
+        BlockEntityRegistration.BLOCK_ENTITIES.register(modEventBus);
       //  TabRegistration.register(modEventBus);
 
 

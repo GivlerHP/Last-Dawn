@@ -19,7 +19,7 @@ import java.util.List;
 
 public class SanityBlockTracker {
 
-    private static final int SCAN_RADIUS = 16;
+    private static final int SCAN_RADIUS = 128;
 
     public static void onStageChanged(ServerPlayer player, ISanity sanity,
                                       SanityStage oldStage, SanityStage newStage) {

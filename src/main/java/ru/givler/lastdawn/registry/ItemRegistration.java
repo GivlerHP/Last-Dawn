@@ -4,8 +4,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import ru.givler.lastdawn.LastDawn;
 import ru.givler.lastdawn.command.SanityCommand;
+import ru.givler.lastdawn.item.TorchItem;
 
 public class ItemRegistration {
     public static final DeferredRegister<Item> ITEMS =

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "lastdawn:block/ghost_wall"
+    "all": "minecraft:block/stone"
   }
 }

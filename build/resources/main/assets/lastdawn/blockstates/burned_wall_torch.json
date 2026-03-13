@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=east":  { "model": "lastdawn:block/burned_wall_torch", "y": 90  },
+    "facing=west":  { "model": "lastdawn:block/burned_wall_torch", "y": 270 },
+    "facing=south": { "model": "lastdawn:block/burned_wall_torch", "y": 180 },
+    "facing=north": { "model": "lastdawn:block/burned_wall_torch" }
+  }
+}

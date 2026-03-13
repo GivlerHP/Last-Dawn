@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
@@ -18,9 +19,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
 import ru.givler.lastdawn.LastDawn;
+import ru.givler.lastdawn.item.TorchItem;
 import ru.givler.lastdawn.network.LDNetwork;
 import ru.givler.lastdawn.network.packet.SanitySyncPacket;
+import ru.givler.lastdawn.registry.BlockRegistration;
 import ru.givler.lastdawn.registry.CommandRegistry;
+import ru.givler.lastdawn.registry.ItemRegistration;
 import ru.givler.lastdawn.sanity.ISanity;
 import ru.givler.lastdawn.sanity.SanityProvider;
 import ru.givler.lastdawn.sanity.SanityStage;
@@ -52,6 +56,8 @@ public class ServerEventHandler {
         if (event.phase != TickEvent.Phase.END) return;
         Player player = event.player;
         if (player.level().isClientSide) return;
+
+        tickTorch(player);
 
         player.getCapability(SanityProvider.SANITY_CAP).ifPresent(sanity -> {
             SanityStage oldStage = sanity.getPreviousStage(); // ← берём сохранённую
@@ -148,6 +154,23 @@ public class ServerEventHandler {
                     serverPlayer.connection.connection,
                     NetworkDirection.PLAY_TO_CLIENT
             );
+        }
+    }
+
+    private static void tickTorch(Player player) {
+        for (var hand : net.minecraft.world.InteractionHand.values()) {
+            ItemStack stack = player.getItemInHand(hand);
+            if (!(stack.getItem() instanceof TorchItem)) continue;
+            if (TorchItem.isBurned(stack)) continue;
+
+            if (player.tickCount % 20 == 0) {
+                int dur = TorchItem.getDurability(stack);
+                TorchItem.setDurability(stack, dur - 1);
+
+                if (TorchItem.isBurned(stack)) {
+                    player.setItemInHand(hand, new ItemStack(BlockRegistration.BURNED_TORCH.get()));
+                }
+            }
         }
     }
 

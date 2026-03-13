@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=east":  { "model": "lastdawn:block/wall_torch", "y": 90  },
+    "facing=west":  { "model": "lastdawn:block/wall_torch", "y": 270 },
+    "facing=south": { "model": "lastdawn:block/wall_torch", "y": 180 },
+    "facing=north": { "model": "lastdawn:block/wall_torch" }
+  }
+}

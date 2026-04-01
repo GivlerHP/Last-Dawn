@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import ru.givler.lastdawn.block.SanityBlock;
 import ru.givler.lastdawn.network.packet.FakeBlockPacket;
-import ru.givler.lastdawn.network.LDNetwork;
+import ru.givler.lastdawn.network.NetworkLD;
 import ru.givler.lastdawn.sanity.ISanity;
 import ru.givler.lastdawn.sanity.SanityStage;
 import net.minecraftforge.network.NetworkDirection;
@@ -48,7 +48,7 @@ public class SanityBlockTracker {
 
         if (!toHide.isEmpty()) {
             System.out.println("Sending FakeBlockPacket HIDE to " + player.getName().getString() + " count=" + toHide.size());
-            LDNetwork.CHANNEL.sendTo(
+            NetworkLD.CHANNEL.sendTo(
                     new FakeBlockPacket(toHide, FakeBlockPacket.Mode.HIDE),
                     player.connection.connection,
                     NetworkDirection.PLAY_TO_CLIENT

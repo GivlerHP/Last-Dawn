@@ -8,10 +8,10 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.network.chat.Component;
+import ru.givler.lastdawn.network.NetworkLD;
 import ru.givler.lastdawn.sanity.ISanity;
 import ru.givler.lastdawn.sanity.SanityProvider;
 import ru.givler.lastdawn.sanity.SanityStage;
-import net.minecraft.commands.arguments.StringRepresentableArgument;
 
 public class SanityCommand {
 
@@ -101,7 +101,7 @@ public class SanityCommand {
     }
 
     private static void syncSanity(ServerPlayer player, ISanity sanity) {
-        ru.givler.lastdawn.network.LDNetwork.CHANNEL.sendTo(
+        NetworkLD.CHANNEL.sendTo(
                 new ru.givler.lastdawn.network.packet.SanitySyncPacket(sanity.getSanity()),
                 player.connection.connection,
                 net.minecraftforge.network.NetworkDirection.PLAY_TO_CLIENT

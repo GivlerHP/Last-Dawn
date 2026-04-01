@@ -24,5 +24,6 @@ public class ClientSetupHandler {
         ItemBlockRenderTypes.setRenderLayer(BlockRegistration.WALL_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BlockRegistration.BURNED_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BlockRegistration.BURNED_WALL_TORCH.get(), RenderType.cutout());
+
     }
 }

@@ -1,7 +1,9 @@
 package ru.givler.lastdawn.events;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -11,6 +13,8 @@ import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LightBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
@@ -20,11 +24,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
 import ru.givler.lastdawn.LastDawn;
 import ru.givler.lastdawn.item.TorchItem;
-import ru.givler.lastdawn.network.LDNetwork;
+import ru.givler.lastdawn.network.NetworkLD;
 import ru.givler.lastdawn.network.packet.SanitySyncPacket;
 import ru.givler.lastdawn.registry.BlockRegistration;
 import ru.givler.lastdawn.registry.CommandRegistry;
-import ru.givler.lastdawn.registry.ItemRegistration;
 import ru.givler.lastdawn.sanity.ISanity;
 import ru.givler.lastdawn.sanity.SanityProvider;
 import ru.givler.lastdawn.sanity.SanityStage;
@@ -58,6 +61,7 @@ public class ServerEventHandler {
         if (player.level().isClientSide) return;
 
         tickTorch(player);
+        tickDynamicLight(player);
 
         player.getCapability(SanityProvider.SANITY_CAP).ifPresent(sanity -> {
             SanityStage oldStage = sanity.getPreviousStage(); // ← берём сохранённую
@@ -149,7 +153,7 @@ public class ServerEventHandler {
 
     private static void syncSanity(Player player, ISanity sanity) {
         if (player instanceof ServerPlayer serverPlayer) {
-            LDNetwork.CHANNEL.sendTo(
+            NetworkLD.CHANNEL.sendTo(
                     new SanitySyncPacket(sanity.getSanity()),
                     serverPlayer.connection.connection,
                     NetworkDirection.PLAY_TO_CLIENT
@@ -165,11 +169,48 @@ public class ServerEventHandler {
 
             if (player.tickCount % 20 == 0) {
                 int dur = TorchItem.getDurability(stack);
-                TorchItem.setDurability(stack, dur - 1);
+                TorchItem.setDurability(stack, dur - 20);
 
                 if (TorchItem.isBurned(stack)) {
                     player.setItemInHand(hand, new ItemStack(BlockRegistration.BURNED_TORCH.get()));
                 }
+            }
+        }
+    }
+
+    private static final java.util.Map<java.util.UUID, BlockPos> lastLightPos = new java.util.HashMap<>();
+
+    private static void tickDynamicLight(Player player) {
+        if (!(player.level() instanceof ServerLevel serverLevel)) return;
+
+        ItemStack main = player.getMainHandItem();
+        ItemStack off = player.getOffhandItem();
+
+        boolean hasTorch = (main.getItem() instanceof TorchItem && !TorchItem.isBurned(main))
+                || (off.getItem() instanceof TorchItem && !TorchItem.isBurned(off));
+
+        BlockPos currentPos = player.blockPosition();
+        BlockPos lastPos = lastLightPos.get(player.getUUID());
+
+        if (hasTorch) {
+            if (serverLevel.getBlockState(currentPos).isAir()) {
+                serverLevel.setBlock(currentPos, net.minecraft.world.level.block.Blocks.LIGHT.defaultBlockState()
+                        .setValue(LightBlock.LEVEL, 14), 3);
+            }
+            if (lastPos != null && !lastPos.equals(currentPos)) {
+                BlockState lastState = serverLevel.getBlockState(lastPos);
+                if (lastState.is(net.minecraft.world.level.block.Blocks.LIGHT)) {
+                    serverLevel.setBlock(lastPos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+            lastLightPos.put(player.getUUID(), currentPos);
+        } else {
+            if (lastPos != null) {
+                BlockState lastState = serverLevel.getBlockState(lastPos);
+                if (lastState.is(net.minecraft.world.level.block.Blocks.LIGHT)) {
+                    serverLevel.setBlock(lastPos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+                }
+                lastLightPos.remove(player.getUUID());
             }
         }
     }

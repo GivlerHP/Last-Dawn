@@ -10,9 +10,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import ru.givler.lastdawn.LastDawn;
-import ru.givler.lastdawn.block.LDWallTorchBlock;
+import ru.givler.lastdawn.block.WallTorchBlockLD;
 import ru.givler.lastdawn.block.SanityBlock;
-import ru.givler.lastdawn.block.LDTorchBlock;
+import ru.givler.lastdawn.block.TorchBlockLD;
 import ru.givler.lastdawn.sanity.SanityStage;
 
 import java.util.function.Supplier;
@@ -39,8 +39,8 @@ public class BlockRegistration {
         return registered;
     }
 
-    public static final RegistryObject<Block> TORCH = registerWithItem("torch",
-            () -> new LDTorchBlock(
+    public static final RegistryObject<Block> TORCH = BLOCKS.register("torch",
+            () -> new TorchBlockLD(
                     BlockBehaviour.Properties.copy(Blocks.TORCH).noOcclusion(),
                     ParticleTypes.FLAME
             )
@@ -48,7 +48,7 @@ public class BlockRegistration {
 
     // Настенный факел (с огнём)
     public static final RegistryObject<Block> WALL_TORCH = BLOCKS.register("wall_torch",
-            () -> new LDWallTorchBlock(
+            () -> new WallTorchBlockLD(
                     BlockBehaviour.Properties.copy(Blocks.WALL_TORCH).noOcclusion(),
                     ParticleTypes.FLAME
             )
@@ -56,7 +56,7 @@ public class BlockRegistration {
 
     // Сгоревший напольный
     public static final RegistryObject<Block> BURNED_TORCH = registerWithItem("burned_torch",
-            () -> new LDTorchBlock(
+            () -> new TorchBlockLD(
                     BlockBehaviour.Properties.copy(Blocks.TORCH).noOcclusion().lightLevel(s -> 0),
                     ParticleTypes.SMOKE
             )
@@ -64,7 +64,7 @@ public class BlockRegistration {
 
     // Сгоревший настенный
     public static final RegistryObject<Block> BURNED_WALL_TORCH = BLOCKS.register("burned_wall_torch",
-            () -> new LDWallTorchBlock(
+            () -> new WallTorchBlockLD(
                     BlockBehaviour.Properties.copy(Blocks.WALL_TORCH).noOcclusion().lightLevel(s -> 0),
                     ParticleTypes.SMOKE
             )

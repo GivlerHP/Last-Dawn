@@ -7,7 +7,7 @@ import ru.givler.lastdawn.LastDawn;
 import ru.givler.lastdawn.network.packet.FakeBlockPacket;
 import ru.givler.lastdawn.network.packet.SanitySyncPacket;
 
-public class LDNetwork {
+public class NetworkLD {
 
     private static final String PROTOCOL = "1";
     public static final SimpleChannel CHANNEL = NetworkRegistry.newSimpleChannel(

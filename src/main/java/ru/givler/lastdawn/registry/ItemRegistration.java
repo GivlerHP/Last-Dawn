@@ -12,4 +12,12 @@ import ru.givler.lastdawn.item.TorchItem;
 public class ItemRegistration {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, LastDawn.MODID);
+
+    public static final RegistryObject<Item> TORCH_ITEM =
+            ITEMS.register("torch",
+                    () -> new TorchItem(
+                            BlockRegistration.TORCH.get(),
+                            new Item.Properties()
+                    )
+            );
 }

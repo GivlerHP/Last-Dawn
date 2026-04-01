@@ -81,19 +81,6 @@ public class ClientEventHandler {
             );
         }
     }
-
-    @Mod.EventBusSubscriber(modid = LastDawn.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public class ClientSetupHandler {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            ItemBlockRenderTypes.setRenderLayer(
-                    BlockRegistration.GHOST_WALL.get(),
-                    RenderType.cutout()
-            );
-        }
-    }
-
-
 }
 
 

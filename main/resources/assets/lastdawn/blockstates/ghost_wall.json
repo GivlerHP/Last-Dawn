@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "ghost=false": { "model": "lastdawn:block/ghost_wall" },
+    "ghost=true":  { "model": "lastdawn:block/ghost_wall_ghost" }
+  }
+}

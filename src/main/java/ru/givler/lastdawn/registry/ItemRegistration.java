@@ -7,6 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import ru.givler.lastdawn.LastDawn;
 import ru.givler.lastdawn.command.SanityCommand;
+import ru.givler.lastdawn.item.LockingKeyItem;
 import ru.givler.lastdawn.item.TorchItem;
 
 public class ItemRegistration {
@@ -19,5 +20,10 @@ public class ItemRegistration {
                             BlockRegistration.TORCH.get(),
                             new Item.Properties()
                     )
+            );
+
+    public static final RegistryObject<Item> LOCKING_KEY =
+            ITEMS.register("locking_key",
+                    () -> new LockingKeyItem()
             );
 }

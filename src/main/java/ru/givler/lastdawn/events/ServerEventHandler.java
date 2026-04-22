@@ -23,6 +23,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.network.NetworkDirection;
 import ru.givler.lastdawn.LastDawn;
+import ru.givler.lastdawn.item.LockingKeyItem;
 import ru.givler.lastdawn.item.TorchItem;
 import ru.givler.lastdawn.network.NetworkLD;
 import ru.givler.lastdawn.network.packet.SanitySyncPacket;
@@ -31,6 +32,11 @@ import ru.givler.lastdawn.registry.CommandRegistry;
 import ru.givler.lastdawn.sanity.ISanity;
 import ru.givler.lastdawn.sanity.SanityProvider;
 import ru.givler.lastdawn.sanity.SanityStage;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import ru.givler.lastdawn.mechanics.LockManager;
+import ru.givler.lastdawn.registry.ItemRegistration;
 
 /**
  * Содержит обработчики событий: деградация рассудка, восстановление, триггер стадий и спавн вардена.
@@ -213,6 +219,33 @@ public class ServerEventHandler {
                 lastLightPos.remove(player.getUUID());
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
+        Level level = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState state = level.getBlockState(pos);
+
+        if (!LockingKeyItem.isLockable(state)) return;
+
+        boolean holdingLockItem = event.getItemStack().getItem() instanceof LockingKeyItem;
+        if (holdingLockItem) return;
+
+        BlockPos normalizedPos = LockingKeyItem.getNormalizedPos(level, pos, state);
+
+        if (LockManager.isLocked(normalizedPos, level)) {
+            event.setUseBlock(Event.Result.DENY);
+            event.setUseItem(Event.Result.DENY);
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer serverPlayer)) return;
+
+        LockManager.syncToPlayer(serverPlayer);
     }
 
     @SubscribeEvent

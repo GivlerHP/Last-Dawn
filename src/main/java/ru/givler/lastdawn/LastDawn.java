@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import ru.givler.lastdawn.network.NetworkLD;
 import ru.givler.lastdawn.registry.BlockRegistration;
 import ru.givler.lastdawn.registry.ItemRegistration;
+import ru.givler.lastdawn.registry.TabRegistration;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(LastDawn.MODID)
@@ -24,6 +25,7 @@ public class LastDawn
 
         BlockRegistration.BLOCKS.register(modEventBus);
         ItemRegistration.ITEMS.register(modEventBus);
+        TabRegistration.register();
 
       //  TabRegistration.register(modEventBus);
 

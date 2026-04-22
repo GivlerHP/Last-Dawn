@@ -5,6 +5,7 @@ import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import ru.givler.lastdawn.LastDawn;
 import ru.givler.lastdawn.network.packet.FakeBlockPacket;
+import ru.givler.lastdawn.network.packet.FragileSyncPacket;
 import ru.givler.lastdawn.network.packet.LockSyncPacket;
 import ru.givler.lastdawn.network.packet.SanitySyncPacket;
 
@@ -42,6 +43,13 @@ public class NetworkLD {
                 LockSyncPacket::encode,
                 LockSyncPacket::decode,
                 LockSyncPacket::handle
+        );
+        CHANNEL.registerMessage(
+                id++,
+                FragileSyncPacket.class,
+                FragileSyncPacket::encode,
+                FragileSyncPacket::decode,
+                FragileSyncPacket::handle
         );
     }
 }

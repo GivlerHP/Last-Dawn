@@ -23,6 +23,7 @@ public class TabRegistration {
                         // Предметы
                         output.accept(ItemRegistration.TORCH_ITEM.get());
                         output.accept(ItemRegistration.LOCKING_KEY.get());
+                        output.accept(ItemRegistration.FRAGILE_KEY.get());
 
                         // Блоки
                         output.accept(BlockRegistration.GHOST_WALL.get());

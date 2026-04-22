@@ -7,6 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import ru.givler.lastdawn.LastDawn;
 import ru.givler.lastdawn.command.SanityCommand;
+import ru.givler.lastdawn.item.FragileKeyItem;
 import ru.givler.lastdawn.item.LockingKeyItem;
 import ru.givler.lastdawn.item.TorchItem;
 
@@ -25,5 +26,10 @@ public class ItemRegistration {
     public static final RegistryObject<Item> LOCKING_KEY =
             ITEMS.register("locking_key",
                     () -> new LockingKeyItem()
+            );
+
+    public static final RegistryObject<Item> FRAGILE_KEY =
+            ITEMS.register("fragile_key",
+                    () -> new FragileKeyItem()
             );
 }

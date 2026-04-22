@@ -9,12 +9,15 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import ru.givler.lastdawn.LastDawn;
+import ru.givler.lastdawn.mechanics.FragileManager;
 import ru.givler.lastdawn.registry.BlockRegistration;
 import ru.givler.lastdawn.sanity.SanityProvider;
 import ru.givler.lastdawn.sanity.SanityStage;
@@ -78,6 +81,26 @@ public class ClientEventHandler {
         for (BlockPos pos : positions) {
             mc.levelRenderer.setSectionDirty(
                     pos.getX() >> 4, pos.getY() >> 4, pos.getZ() >> 4
+            );
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRenderLevel(RenderLevelStageEvent event) {
+        if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES) return;
+
+        Minecraft mc = Minecraft.getInstance();
+        Level level = mc.level;
+        if (level == null) return;
+
+        for (var entry : FragileManager.getClientPositions().entrySet()) {
+            BlockPos pos = BlockPos.of(entry.getKey());
+            int stage = entry.getValue(); // 1, 2, 3
+
+            mc.levelRenderer.destroyBlockProgress(
+                    pos.hashCode(),
+                    pos,
+                    (stage - 1) * 3
             );
         }
     }

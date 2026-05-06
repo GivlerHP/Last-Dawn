@@ -9,7 +9,9 @@ import ru.givler.lastdawn.LastDawn;
 import ru.givler.lastdawn.command.SanityCommand;
 import ru.givler.lastdawn.item.FragileKeyItem;
 import ru.givler.lastdawn.item.LockingKeyItem;
+import ru.givler.lastdawn.item.SanityItem;
 import ru.givler.lastdawn.item.TorchItem;
+import ru.givler.lastdawn.sanity.SanityStage;
 
 public class ItemRegistration {
     public static final DeferredRegister<Item> ITEMS =
@@ -32,4 +34,17 @@ public class ItemRegistration {
             ITEMS.register("fragile_key",
                     () -> new FragileKeyItem()
             );
+
+    public static final RegistryObject<Item> BURNING_CROSS = ITEMS.register("burning_cross",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> CROSS = ITEMS.register("cross",
+            () -> new SanityItem(
+                    new Item.Properties(),
+                    BURNING_CROSS.get(),
+                    true,
+                    SanityStage.PSYCHOSIS, SanityStage.INSANITY
+            )
+    );
 }

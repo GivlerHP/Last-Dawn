@@ -94,6 +94,7 @@ public class ServerEventHandler {
             if (oldStage != newStage && player instanceof ServerPlayer serverPlayer) {
                 System.out.println("Stage changed: " + oldStage + " -> " + newStage);
                 SanityBlockTracker.onStageChanged(serverPlayer, sanity, oldStage, newStage);
+                SanityItemTracker.onStageChanged(player, oldStage, newStage);
                 sanity.setPreviousStage(newStage); // ← сохраняем новую
             }
 

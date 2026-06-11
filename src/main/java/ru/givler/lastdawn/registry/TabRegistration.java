@@ -27,6 +27,15 @@ public class TabRegistration {
 
                         // Блоки
                         output.accept(BlockRegistration.GHOST_WALL.get());
+
+                        output.accept(ModelRegistration.BOOK_1.get());
+                        output.accept(ModelRegistration.BOOK_2.get());
+                        output.accept(ModelRegistration.BOOK_3.get());
+                        output.accept(ModelRegistration.BOOK_4.get());
+                        output.accept(ModelRegistration.BOOK_5.get());
+                        output.accept(ModelRegistration.BOOK_6.get());
+                        output.accept(ModelRegistration.BOOK_7.get());
+                        output.accept(ModelRegistration.BOOK_8.get());
                     })
                     .build()
             );

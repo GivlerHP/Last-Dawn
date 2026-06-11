@@ -8,9 +8,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import ru.givler.lastdawn.network.NetworkLD;
-import ru.givler.lastdawn.registry.BlockRegistration;
-import ru.givler.lastdawn.registry.ItemRegistration;
-import ru.givler.lastdawn.registry.TabRegistration;
+import ru.givler.lastdawn.registry.*;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(LastDawn.MODID)
@@ -23,7 +21,10 @@ public class LastDawn
         IEventBus modEventBus = context.getModEventBus();
         MinecraftForge.EVENT_BUS.register(this);
 
+
         BlockRegistration.BLOCKS.register(modEventBus);
+        ModelRegistration.BLOCKS.register(modEventBus);
+        BlockEntityRegistration.BLOCK_ENTITIES.register(modEventBus);
         ItemRegistration.ITEMS.register(modEventBus);
         TabRegistration.register();
 

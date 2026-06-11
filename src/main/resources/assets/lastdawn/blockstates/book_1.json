@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,top=false": { "model": "lastdawn:block/book_1" },
+    "facing=south,top=false": { "model": "lastdawn:block/book_1" },
+    "facing=east,top=false":  { "model": "lastdawn:block/book_1" },
+    "facing=west,top=false":  { "model": "lastdawn:block/book_1" },
+    "facing=north,top=true":  { "model": "lastdawn:block/book_1" },
+    "facing=south,top=true":  { "model": "lastdawn:block/book_1" },
+    "facing=east,top=true":   { "model": "lastdawn:block/book_1" },
+    "facing=west,top=true":   { "model": "lastdawn:block/book_1" }
+  }
+}
